@@ -7,7 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -q project.zip -d proj
+        with: { fetch-depth: 0 }
+      - name: Unzip newest project4 zip
+        run: |
+          f="$(git log -1 --name-only --pretty=format: -- '*.zip' | head -1)"
+          echo "Using: $f"
+          unzip -q "$f" -d proj
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - uses: gradle/actions/setup-gradle@v4
